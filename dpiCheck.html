@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>    
+    <script src="Scripts/jquery-1.9.1.js"></script>
+    <script src="Scripts/mmToPxConverter.js"></script>
+    <script src="Settings.js"></script>
+	<meta charset="utf-8" />
+    <style type="text/css">
+        div{
+            color:white;
+            margin: 0;
+        }
+        .outer {
+            display: table;
+            position: absolute;
+            height: 99%;
+            width: 99%;
+        }
+        .middle {
+            display: table-cell;
+            vertical-align: middle;
+        }
+        .drawingContainer {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            background-color:black; 
+            overflow: hidden ;
+            text-align:center;
+        }
+    </style>
+</head>
+<body>
+    <div class="outer">
+        <div class="middle">            
+            <div id="divs" class="drawingContainer">
+                See peab olema 20 cm lai
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var conv = new MmToPxConverter(testOptions.monitorDpi);
+        var pxPerMm = conv.getCssDimInPx(200);
+        $("#divs").css("width", pxPerMm);
+    })
+</script>

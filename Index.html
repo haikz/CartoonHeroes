@@ -1,0 +1,105 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+	<meta charset="utf-8" />
+    <link href="StyleSheet.css" rel="stylesheet" />
+    <script src="Scripts/jquery-1.9.1.js"></script>    
+    <script src="Settings.js"></script>
+    <script src="Scripts/mmToPxConverter.js"></script>
+    <script src="Scripts/Drawer.js"></script>
+    <script src="Scripts/cartoonHeroesTest.js"></script>
+</head>
+<body>   
+<div class="outer">
+    <div class="middle">
+        <div id="instructions" class="alignCenter instructions">
+            <div>
+               Tere tulemast eksperimenti! 				<br />
+				<br />
+				Selles eksperimendis sa näed kõigepealt ekraani keskel risti. <br />
+				Iga kord kui see rist ilmub, tuleks vaadata seda risti, sest hetke pärast <br />
+				ilmuvad selle ümber väikesed o tähed, mille hulgas on üks suur X või N täht. <br />
+				<br />
+				Sinu ülesandeks on vajutada v-klahvi, kui näed X-i ja n-klahvi, kui näed N-i. <br />
+				<br />
+				Aegajalt ilmub tähtedest üleval või allpool multifilmitegelase pilt,  <br />
+				millel ei ole ülesande täitmise seisukohast mingit tähtsust. <br />
+				Tähtis on võimalikult kiiresti vastata, kas nägid X või N tähte.<br />
+				 <br />
+				Kui vastad valesti või sa ei jõudnud vastata enne järgmise risti ilmumist,  <br />
+				kostub arvutist piiks. Õige vastuse korral piiksu ei kuule.  <br />
+				<br />
+				Kui oled selle instruktsiooni läbi lugenud, ütle seda eksperimentaatorile. <br />
+                <strong>Käivitamiseks vajutab eksperimentaator hiirega vastavat ekraaninuppu</strong>
+            </div>
+            <button type="button" id="startExampleButton">Käivita aeglane proovikatse</button>
+			<button type="button" id="startExampleButton2">Käivita eksperimendikiirusega proovikatse</button>  
+            <button type="button" id="startButton">Käivita eksperiment</button>
+        </div>
+        <div id="testRun">
+            <div id="picLoc1" class="alignCenter picture"></div>
+            <div id="beforeStimuls" class="alignCenter spanner"></div>
+            <!-- stiimulid tulevad siia-->
+            <!-- Alumine pilt -->
+            <div class="alignCenter spanner"></div>
+            <div id="picLoc2" class="alignCenter picture"></div>   
+        </div> 
+        <div id="testResult" style="display:none" class="alignCenter instructions">
+            Test on lõppenud <br/>
+            <strong>tulemused:</strong>
+            <button id="downloadResultsButton" type="button">laadi alla</button>
+            <button id="showResultsButton" type="button">Kuva tulemused</button>
+            <br />
+            <textarea id="resultsTeaxArea" rows="30" cols="50" style="display:none" class="alignCenter instructions"></textarea>            
+        </div>    
+    </div>
+</div>
+
+</body>
+</html>
+<script type="text/javascript">
+    $(document).ready(function () {    
+        var test = new cartoonHeroesTest(testOptions);       
+        $("#startButton").click(function (event) {           
+            event.originalEvent.defaultPrevented;
+            $("#instructions").remove();
+            test.run();            
+            return (false);
+        });
+        $("#startExampleButton").click(function (event) {
+            event.originalEvent.defaultPrevented;
+            $("#instructions").remove();
+            test.isTestRunSlow = true;
+            test.run();
+            return (false);
+        });
+        $("#startExampleButton2").click(function (event) {
+            event.originalEvent.defaultPrevented;
+            $("#instructions").remove();
+            test.isTestRunFast = true;
+            test.run();
+            return (false);
+        });
+        $("#downloadResultsButton").click(function (event) {
+            var link = document.createElement("a");
+            link.download = "results.txt";
+            link.href = "data:text/html," + encodeURIComponent(test.testResult);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            delete link;
+        });
+        $("#showResultsButton").click(function (event) {
+            $("#resultsTeaxArea").css("display", "block");
+            var _testResult = test.testResult;
+            var _newline = String.fromCharCode(13, 10);
+            do {
+                var split = _testResult.split('\\n');
+                _testResult = split.join(_newline);
+            } while (split.length > 1);
+            $("#resultsTeaxArea").text(_testResult);
+        });
+    })
+</script>
+
