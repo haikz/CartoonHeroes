@@ -11,11 +11,12 @@
     this.locations = this.getSymbolsLoc();    
     this.crrntTestCaseNo = 0;
     this.testCases = [];
+    this.screenTwoPrinted = new Date();
     this.screenThreePrinted = new Date();
     this.waitinguserInput = false;
     this.testResult = "";
     this.isTestRunSlow = false;
-	this.isTestRunFast = false;
+    this.isTestRunFast = false;    
 }
 
 cartoonHeroesTest.prototype = {
@@ -145,13 +146,17 @@ cartoonHeroesTest.prototype = {
                 this.drawer.drawOval(_loc.x, _loc.y, this.options.symbol.symbols[0].height, this.options.symbol.symbols[0].width, this.options.symbol.symbols[0].line)                
             }
         }
+        this.screenTwoPrinted = new Date();
         if (_testCase.picLoc > 0) {
             $("#picLoc" + _testCase.picLoc).append('<img src="Pics/'+this.options.cartoonPic.pictures[_testCase.picture]+'" />');
-        }
+        }        
         _test = this;
         setTimeout(function () { _test.showScreenThree() }, this.options.timing.screenTwo);
     },
-    showScreenThree: function () {
+    showScreenThree: function () {        
+        var _timeDisplayed = new Date();
+        _timeDisplayed.setTime((new Date()).getTime() - this.screenTwoPrinted.getTime());
+
         this.drawer.clearCanvas();
         if (this.testCases[this.crrntTestCaseNo].picLoc > 0) {
             $("#picLoc" +this.testCases[this.crrntTestCaseNo].picLoc).empty();
@@ -165,6 +170,7 @@ cartoonHeroesTest.prototype = {
         this.testResult += _testCase.picLoc.toString() + ";";
         this.testResult += (_testCase.picLoc > 0 ? this.options.cartoonPic.pictures[_testCase.picture] : "") + ";";
         this.testResult += this.options.level.toString() + ";";
+        this.testResult += _timeDisplayed.getTime() + ";";
         this.testResult += this.options.symbol.symbols[_testCase.symbol].keyCode.toString() + ";";
         this.screenThreePrinted = new Date();
         this.waitinguserInput = true;
